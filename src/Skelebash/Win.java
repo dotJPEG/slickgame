@@ -11,9 +11,9 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import static Skelebash.Skelebash1.player;
 import static Skelebash.Skelebash1.antidote;
 
-public class win extends BasicGameState {
+public class Win extends BasicGameState {
     private StateBasedGame game;
-    public win(int xSize, int ySize) {
+    public Win(int xSize, int ySize) {
     }
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {

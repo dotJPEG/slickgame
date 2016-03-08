@@ -11,12 +11,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-public class lose extends BasicGameState {
+public class Lose extends BasicGameState {
 
     private StateBasedGame game;
     public Image startimage;
 
-    public lose(int xSize, int ySize) {
+    public Lose(int xSize, int ySize) {
     }
 
     public void init(GameContainer container, StateBasedGame game)

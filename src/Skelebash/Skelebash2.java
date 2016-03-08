@@ -26,14 +26,14 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-public class Skelebash1 extends BasicGameState {
+public class Skelebash2 extends BasicGameState {
 
     public static Player player;
     public static ItemWin antidote;
     public Orb magic8ball, orb1;
     public Enemy jackson;
-    public Trapdoor trapdoor;
-    public ArrayList<Trapdoor> trapdor = new ArrayList();
+    public Treasure treasure;
+    public ArrayList<Treasure> tresure = new ArrayList();
     public ArrayList<ItemWin> stuffwin = new ArrayList();
     public ArrayList<Enemy> enemiez = new ArrayList();
     private boolean[][] hostiles;
@@ -46,15 +46,15 @@ public class Skelebash1 extends BasicGameState {
     private static final int SCREEN_HEIGHT = 750;
     static int enemiezCounter = 0;
     static boolean attack = false;
-
-    public Skelebash1(int xSize, int ySize) {
+    
+    public Skelebash2(int xSize, int ySize) {
 
     }
 
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
-        Music gamesong = new Music("res/Bit_Quest.ogg");
-        gamesong.loop(1.0F, 5.0F);
+    Music gamesong = new Music("res/Bit_Quest.ogg");
+                gamesong.loop(1.0F, 5.0F);              
 
         gc.setTargetFrameRate(60);
         gc.setShowFPS(false);
@@ -79,27 +79,27 @@ public class Skelebash1 extends BasicGameState {
 
         hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-                int xBlock = (int) xAxis;
-                int yBlock = (int) yAxis;
-                if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (yBlock % 7 == 0 && xBlock % 15 == 0 && enemiezCounter < 20) {
-                        Enemy e = new Enemy(xAxis * SIZE, yAxis * SIZE);
-                        enemiez.add(e);
-                        enemiezCounter += 1;
-                        hostiles[xAxis][yAxis] = true;
-                    }
-                }
-            }
-        }
+//        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+//            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+//                int xBlock = (int) xAxis;
+//                int yBlock = (int) yAxis;
+//                if (!Blocked.blocked[xBlock][yBlock]) {
+//                    if (yBlock % 7 == 0 && xBlock % 15 == 0 && enemiezCounter < 20) {
+//                        Enemy e = new Enemy(xAxis * SIZE, yAxis * SIZE);
+//                        enemiez.add(e);
+//                        enemiezCounter += 1;
+//                        hostiles[xAxis][yAxis] = true;
+//                    }
+//                }
+//            }
+//        }
 
         jackson = new Enemy((int) player.x + 142, (int) player.y + 142);
         orb1 = new Orb((int) player.x, (int) player.y);
-        trapdoor = new Trapdoor(1290, 1271);
-        antidote = new ItemWin(1474, 511);
+        treasure = new Treasure(1290,1271);
+//        antidote = new ItemWin(1474, 511);
         stuffwin.add(antidote);
-        trapdor.add(trapdoor);
+        tresure.add(treasure);
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
@@ -125,14 +125,13 @@ public class Skelebash1 extends BasicGameState {
                 e.currentanime.draw(e.Bx, e.By);
             }
         }
-
-        for (Trapdoor t : trapdor) {
+    
+        for (Treasure t : tresure){
             if (t.isvisible) {
-                t.currentImage.draw(t.x, t.y);
+                t.currentImage.draw(t.x,t.y);
             }
         }
     }
-
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
 
@@ -153,7 +152,7 @@ public class Skelebash1 extends BasicGameState {
                 player.y -= fdelta;
             }
 
-        } else if (input.isKeyDown(Input.KEY_DOWN)) {
+        }else if (input.isKeyDown(Input.KEY_DOWN)) {
             player.setDirection(2);
             player.sprite = player.down;
             if (!isBlocked(player.x, player.y + SIZE + fdelta)
@@ -162,7 +161,7 @@ public class Skelebash1 extends BasicGameState {
                 player.y += fdelta;
             }
 
-        } else if (input.isKeyDown(Input.KEY_LEFT)) {
+        }else if (input.isKeyDown(Input.KEY_LEFT)) {
             player.setDirection(3);
             player.sprite = player.left;
             if (!(isBlocked(player.x - fdelta, player.y) || isBlocked(player.x
@@ -171,7 +170,7 @@ public class Skelebash1 extends BasicGameState {
                 player.x -= fdelta;
             }
 
-        } else if (input.isKeyDown(Input.KEY_RIGHT)) {
+        }else if (input.isKeyDown(Input.KEY_RIGHT)) {
             player.setDirection(1);
             player.sprite = player.right;
             if (cangoright
@@ -180,61 +179,61 @@ public class Skelebash1 extends BasicGameState {
                             + SIZE - 1)))) {
                 player.sprite.update(delta);
                 player.x += fdelta;
-            }
-        } else if (input.isKeyDown(Input.KEY_A)) {
+            } 
+        }else if(input.isKeyDown(Input.KEY_A)){
             attack = true;
-            Sound clang = new Sound("res/Sword_clash.ogg");
-            clang.play(1.0F, 5.0F);
-            if (player.getDirection() == 0) {
+          Sound clang = new Sound("res/Sword_clash.ogg");
+              clang.play(1.0F,5.0F);
+            if(player.getDirection()==0){
                 player.sprite = player.attackUp;
-            } else if (player.getDirection() == 2) {
-                player.sprite = player.attackDown;
-            } else if (player.getDirection() == 3) {
-                player.sprite = player.attackLeft;
-            } else if (player.getDirection() == 1) {
-                player.sprite = player.attackRight;
-            } else {
-                player.sprite = player.down;
+            }else if(player.getDirection()==2){
+                player.sprite = player.attackDown;                
+            }else if(player.getDirection()==3){
+                player.sprite = player.attackLeft;                
+            }else if(player.getDirection()==1){
+                player.sprite = player.attackRight;                
+            }else{
+            player.sprite = player.down;
             }
-        } else if (input.isKeyPressed(Input.KEY_SPACE)) {
-            if (orb1.isIsVisible() == false) {
-                if (orb1.getAmmo() > 0) {
-                    orb1.setDirection(player.getDirection());
-                    orb1.settimeExists(100);
-                    orb1.setX((int) player.x);
-                    orb1.setY((int) player.y);
-                    orb1.hitbox.setX(orb1.getX());
-                    orb1.hitbox.setY(orb1.getY());
-                    orb1.setIsVisible(!orb1.isIsVisible());
-                    orb1.setIsVisible(orb1.isIsVisible());
-                    Sound blaster = new Sound("res/blaster.ogg");
-                    blaster.play(.25F, 20F);
-                    orb1.setAmmo();
-                }
-            } else {
-                attack = false;
+        }else if (input.isKeyPressed(Input.KEY_SPACE)) {
+         if (orb1.isIsVisible() == false) {
+            if(orb1.getAmmo()>0){
+            orb1.setDirection(player.getDirection());
+            orb1.settimeExists(100);
+            orb1.setX((int) player.x);
+            orb1.setY((int) player.y);
+            orb1.hitbox.setX(orb1.getX());
+            orb1.hitbox.setY(orb1.getY());
+            orb1.setIsVisible(!orb1.isIsVisible());
+            orb1.setIsVisible(orb1.isIsVisible());
+            Sound blaster = new Sound("res/blaster.ogg");
+            blaster.play(.25F,20F);
+            orb1.setAmmo();
             }
-
-        } else {
+         }else{
+            attack = false;
+        }
+         
+        }else{
             attack = false;
         }
         player.rect.setLocation(player.getPlayershitboxX(),
                 player.getPlayershitboxY());
 
         for (Enemy e : enemiez) {
-            if (player.rect.intersects(e.rect) && e.isVisible == true) {
-                player.healthTime();
+            if(player.rect.intersects(e.rect) && e.isVisible == true){
+             player.healthTime();
                 if (player.getHealthTime() % 10 == 0) {
                     player.loseHealth();
-                }
+                }  
             }
             if (orb1.hitbox.intersects(e.rect) || player.rect.intersects(e.rect) && attack) {
-                if (e.isVisible) {
+                if(e.isVisible){                 
                     Sound willhelm = new Sound("res/willhelm.ogg");
-                    willhelm.play(1.0F, 5.0F);
-                    player.killCounter();
-                    int randy = (int) (Math.random() * ((3 - 0) + 1));
-                    player.playerInventory(randy);
+                willhelm.play(1.0F,5.0F);
+                player.killCounter();
+                int randy = (int)(Math.random() * ((3 - 0) + 1));
+                player.playerInventory(randy);
                     if (randy == 0) {
                         player.killCounter();
                         player.killCounter();
@@ -243,18 +242,18 @@ public class Skelebash1 extends BasicGameState {
                 e.isVisible = false;
             }
         }
-        for (ItemWin i : stuffwin) {
-            if (player.getkillCounter() > 4) {
-                i.isvisible = false;
-            }
-            if (player.rect.intersects(i.hitbox) && i.isvisible) {
-                player.y -= 10;
-            }
-        }
-        for (Trapdoor t : trapdor) {
+//        for(ItemWin i : stuffwin) {
+//            if (player.getkillCounter()>4) {
+//                i.isvisible = false;
+//            }
+//            if (player.rect.intersects(i.hitbox) && i.isvisible) {
+//                player.y-=10;
+//            }
+//        }
+        for (Treasure t : tresure) {
             t.isvisible = true;
-            if (player.rect.intersects(t.hitbox)) {
-                sbg.enterState(6, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+            if(player.rect.intersects(t.hitbox)){
+                sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             }
         }
 
@@ -294,11 +293,11 @@ public class Skelebash1 extends BasicGameState {
     }
 
     public int getID() {
-        return 1;
+        return 6;
     }
 
     public void makevisible() {
-
+      
     }
 
     private boolean isBlocked(float tx, float ty) {
